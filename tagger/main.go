@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"strings"
 	"time"
 
 	models "github.com/diivix/pathfinder-models"
@@ -13,12 +12,15 @@ import (
 )
 
 func main() {
-	importSpells("../data/spells.json")
+	var startTime = time.Now()
+	spells := importSpells("../data/spells.original.json")
+	tagSpells(spells)
+	exportSpells("../data/spells.json", spells)
+
+	log.Printf("End tagging at %s. Start time was %s", time.Now().Format(time.StampMilli), startTime.Format(time.StampMilli))
 }
 
-func importSpells(path string) {
-	var startTime = time.Now()
-
+func importSpells(path string) []models.Spell {
 	byteValue, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Println(err)
@@ -31,6 +33,22 @@ func importSpells(path string) {
 		fmt.Println(unmarchelErr)
 	}
 
+	return spells
+}
+
+func exportSpells(path string, spells []models.Spell) {
+	bytes, jsonErr := json.Marshal(spells)
+	if jsonErr != nil {
+		log.Fatal(jsonErr)
+	}
+
+	fileErr := ioutil.WriteFile(path, bytes, 0644)
+	if fileErr != nil {
+		log.Fatal(fileErr)
+	}
+}
+
+func tagSpells(spells []models.Spell) {
 	for i := 0; i < len(spells); i++ {
 		log.Println("Generating tags for: " + spells[i].Name)
 
@@ -42,13 +60,5 @@ func importSpells(path string) {
 		spells[i].Tags = append(spells[i].Tags, tag.Range(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.Duration(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.Reference(spells[i])...)
-
-		fmt.Println(" |_ Tags are: " + strings.Join(spells[i].Tags, ", "))
 	}
-
-	log.Println("End tagging. Start time was " + startTime.Local().String())
-}
-
-func exportSpells() {
-
 }

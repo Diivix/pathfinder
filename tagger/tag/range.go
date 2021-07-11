@@ -1,12 +1,10 @@
 package tag
 
 import (
-	"fmt"
 	"github.com/diivix/pathfinder-models"
 )
 
 func Range(spell models.Spell) []string {
-	fmt.Println(" |_ Building tags for Range")
 	var tags []string
 
 	switch spell.Range {

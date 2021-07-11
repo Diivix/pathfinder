@@ -1,12 +1,10 @@
 package tag
 
 import (
-	"fmt"
 	"github.com/diivix/pathfinder-models"
 )
 
 func CastingTime(spell models.Spell) []string {
-	fmt.Println(" |_ Building tags for CastingTime")
 	var tags []string
 
 	switch spell.CastingTime {

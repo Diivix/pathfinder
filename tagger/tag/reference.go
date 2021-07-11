@@ -1,14 +1,12 @@
 package tag
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/diivix/pathfinder-models"
 )
 
 func Reference(spell models.Spell) []string {
-	fmt.Println(" |_ Building tags for Reference")
 	var tags []string
 
 	switch {

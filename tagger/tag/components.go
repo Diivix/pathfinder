@@ -1,12 +1,10 @@
 package tag
 
 import (
-	"fmt"
 	"github.com/diivix/pathfinder-models"
 )
 
 func Components(spell models.Spell) []string {
-	fmt.Println(" |_ Building tags for Components")
 	var tags []string
 
 	for _, element := range spell.Components {

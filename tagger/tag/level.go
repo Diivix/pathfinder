@@ -1,12 +1,10 @@
 package tag
 
 import (
-	"fmt"
 	"github.com/diivix/pathfinder-models"
 )
 
 func Level(spell models.Spell) []string {
-	fmt.Println(" |_ Building tags for Level")
 	var tags []string
 
 	switch {

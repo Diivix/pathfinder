@@ -1,14 +1,12 @@
 package tag
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/diivix/pathfinder-models"
 )
 
 func Duration(spell models.Spell) []string {
-	fmt.Println(" |_ Building tags for Duration")
 	var tags []string
 
 	switch {
