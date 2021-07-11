@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"hash/fnv"
 	"io/ioutil"
 	"log"
 	"time"
@@ -52,6 +53,7 @@ func tagSpells(spells []models.Spell) {
 	for i := 0; i < len(spells); i++ {
 		log.Println("Generating tags for: " + spells[i].Name)
 
+		spells[i].Id = hash(spells[i].Name)
 		spells[i].Tags = append(spells[i].Tags, tag.ClassTypes(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.Components(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.School(spells[i])...)
@@ -61,4 +63,10 @@ func tagSpells(spells []models.Spell) {
 		spells[i].Tags = append(spells[i].Tags, tag.Duration(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.Reference(spells[i])...)
 	}
+}
+
+func hash(value string) uint64 {
+	hash := fnv.New64()
+	hash.Write([]byte(value))
+	return hash.Sum64()
 }

@@ -1,7 +1,7 @@
 package models
 
 type Spell struct {
-	Id             string
+	Id             uint64
 	Name           string
 	ClassTypes     []string
 	Components     []string
