@@ -8,7 +8,7 @@ import (
 	"log"
 	"time"
 
-	models "github.com/diivix/pathfinder-models"
+	"github.com/diivix/pathfinder-models"
 	"github.com/diivix/pathfinder-tagger/tag"
 )
 
@@ -62,6 +62,7 @@ func tagSpells(spells []models.Spell) {
 		spells[i].Tags = append(spells[i].Tags, tag.Range(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.Duration(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.Reference(spells[i])...)
+		spells[i].Tags = append(spells[i].Tags, tag.Theme(spells[i])...)
 	}
 }
 

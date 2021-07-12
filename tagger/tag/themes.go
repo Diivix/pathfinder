@@ -1,9 +1,10 @@
 package tag
 
 import (
+	"regexp"
 	"strings"
 
-	"github.com/diivix/pathfinder-models"
+	models "github.com/diivix/pathfinder-models"
 )
 
 const (
@@ -31,12 +32,20 @@ const (
 func Theme(spell models.Spell) []string {
 	var tags []string
 
-	if strings.Contains(spell.Description, "You touch one willing creature") {
+	// Aid
+	reg := regexp.MustCompile(`\bwilling creature(s)?\b`)
+	if reg.MatchString(spell.Description) {
 		tags = append(tags, EFFECT_AID)
 	}
 
 	if strings.Contains(spell.Description, "and add the number rolled to one ability check of its choice") {
 		tags = append(tags, THEME_CONVERSATION, THEME_INVESTIGATION, EFFECT_AID, EFFECT_BUFF)
+	}
+
+	// Area of effect
+	reg = regexp.MustCompile(`([0-9]{2}-foot((-| )(radius|diameter))? (cube|cone|sphere|square))|(in the area)`)
+	if reg.MatchString(spell.Description) {
+		tags = append(tags, EFFECT_AREA_OF_EFFECT)
 	}
 
 	return tags
