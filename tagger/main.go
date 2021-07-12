@@ -51,9 +51,9 @@ func exportSpells(path string, spells []models.Spell) {
 
 func tagSpells(spells []models.Spell) {
 	for i := 0; i < len(spells); i++ {
-		log.Println("Generating tags for: " + spells[i].Name)
-
 		spells[i].Id = hash(spells[i].Name)
+
+		log.Printf("Generating tags for: %s (%d)", spells[i].Name, spells[i].Id)
 		spells[i].Tags = append(spells[i].Tags, tag.ClassTypes(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.Components(spells[i])...)
 		spells[i].Tags = append(spells[i].Tags, tag.School(spells[i])...)

@@ -1,6 +1,7 @@
 package tag
 
 import (
+	"log"
 	"regexp"
 	"strings"
 
@@ -30,23 +31,54 @@ const (
 )
 
 func Theme(spell models.Spell) []string {
+	log.Print("\tSetting theme tags")
 	var tags []string
 
-	// Aid
-	reg := regexp.MustCompile(`\bwilling creature(s)?\b`)
-	if reg.MatchString(spell.Description) {
+	if hasEffectAid(spell) {
 		tags = append(tags, EFFECT_AID)
 	}
 
-	if strings.Contains(spell.Description, "and add the number rolled to one ability check of its choice") {
-		tags = append(tags, THEME_CONVERSATION, THEME_INVESTIGATION, EFFECT_AID, EFFECT_BUFF)
-	}
-
-	// Area of effect
-	reg = regexp.MustCompile(`([0-9]{2}-foot((-| )(radius|diameter))? (cube|cone|sphere|square))|(in the area)`)
-	if reg.MatchString(spell.Description) {
+	if hasEffectAreaOfEffect(spell) {
 		tags = append(tags, EFFECT_AREA_OF_EFFECT)
 	}
 
+	if hasEffectBuff(spell) {
+		tags = append(tags, EFFECT_BUFF)
+	}
+
 	return tags
+}
+
+func hasEffectAid(spell models.Spell) bool {
+	reg := regexp.MustCompile(`\bwilling creature(s)?\b`)
+	if reg.MatchString(spell.Description) {
+		log.Printf("\t\thasEffectAid - Rule 1")
+		return true
+	}
+
+	if strings.Contains(spell.Description, "add the number rolled to one ability check of its choice") {
+		log.Printf("\t\thasEffectAid - Rule 2")
+		return true
+	}
+
+	return false
+}
+
+func hasEffectAreaOfEffect(spell models.Spell) bool {
+	reg := regexp.MustCompile(`([0-9]{2}-foot((-| )(radius|diameter))? (cube|cone|sphere|square))|(in the area)`)
+	if reg.MatchString(spell.Description) {
+		log.Printf("\t\thasEffectAreaOfEffect - Rule 1")
+		return true
+	}
+
+	return false
+}
+
+func hasEffectBuff(spell models.Spell) bool {
+	if strings.Contains(spell.Description, "add the number rolled to one ability check of its choice") {
+		log.Printf("\t\thasEffectBuff - Rule 1")
+		return true
+	}
+
+	return false
 }
